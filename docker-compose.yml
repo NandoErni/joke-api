@@ -1,11 +1,11 @@
 services:
   joke-api:
-    build: .
+    image: nandoerni/joke-api:latest
     ports:
       - "8080:8080"
     environment:
-      - DB_PATH=/data/jokes.db
-      - GIN_MODE=release
+      - API_KEY=${API_KEY}
+      - DB_PATH=${DB_PATH}
     volumes:
       - ./database:/data
     restart: always
