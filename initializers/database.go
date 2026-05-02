@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/NandoErni/joke-api/models"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
@@ -20,4 +21,12 @@ func ConnectToDB() *gorm.DB {
 	}
 
 	return db
+}
+
+func SyncDatabase(db *gorm.DB) {
+	err := db.AutoMigrate(&models.Joke{})
+
+	if err != nil {
+		log.Fatal("Migration failed: ", err)
+	}
 }

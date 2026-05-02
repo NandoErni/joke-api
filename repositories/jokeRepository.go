@@ -12,6 +12,7 @@ var db *gorm.DB
 
 func init() {
 	db = initializers.ConnectToDB()
+	initializers.SyncDatabase(db)
 }
 
 func GetJokes() ([]models.Joke, error) {
