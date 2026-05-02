@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/subtle"
+	"fmt"
 	"os"
 
 	"github.com/NandoErni/joke-api/controllers"
@@ -9,6 +10,8 @@ import (
 )
 
 func main() {
+
+	fmt.Println("Starting Server...")
 	router := gin.Default()
 
 	// Public routes
@@ -24,13 +27,17 @@ func main() {
 		authorized.DELETE("/jokes/:id", controllers.DeleteJoke)
 	}
 
-	router.Run("localhost:8080")
+	router.Run(":8080")
+	fmt.Println("Server running...")
 }
 
 func APIKeyAuth() gin.HandlerFunc {
 	key := os.Getenv("API_KEY")
 	if key == "" {
-		panic("API_KEY must be set")
+		return func(c *gin.Context) {
+			c.JSON(401, gin.H{"error": "Unauthorized"})
+			c.Abort()
+		}
 	}
 
 	return func(c *gin.Context) {
